@@ -1,0 +1,56 @@
+FROM pytorch/pytorch:1.13.1-cuda11.6-cudnn8-devel
+
+ADD docker/requirements.txt /tmp/
+ADD ssil/environment.yml /tmp/environment.yml
+
+RUN apt update && apt install -y \
+    build-essential \
+    ffmpeg \
+    libsm6 \
+    libxext6 \
+    git \
+    vim \
+    && pip install --no-cache-dir -r /tmp/requirements.txt \
+    && pip install --no-cache-dir importlib-metadata==4.13.0 --force-reinstall \
+    && apt-get purge -y build-essential \
+    && apt-get autoremove -y \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
+    && conda install -c conda-forge pybind11 \
+    && apt update && apt-get install -y \
+    cmake \
+    g++ \
+    wget \
+    libboost-all-dev \
+    gdb \
+    libyaml-cpp-dev \
+    unzip
+
+RUN pip install torch_geometric \
+    && pip install pyg_lib==0.3.1 torch-scatter==2.1.1 torch_sparse==0.6.17 torch_spline_conv==1.2.2 torch_cluster==1.6.1 -f https://pytorch-geometric.com/whl/torch-1.13.1+cu116.html
+
+RUN pip install markupsafe==2.0.1
+
+RUN wget https://github.com/microsoft/onnxruntime/releases/download/v1.14.1/onnxruntime-linux-x64-1.14.1.tgz \
+    && tar -xf onnxruntime-linux-x64-1.14.1.tgz \
+    && cp onnxruntime-linux-x64-1.14.1/lib/* /usr/lib/ && cp onnxruntime-linux-x64-1.14.1/include/* /usr/include/
+
+RUN wget https://download.pytorch.org/libtorch/cu116/libtorch-cxx11-abi-shared-with-deps-1.13.1%2Bcu116.zip \
+    && unzip libtorch-cxx11-abi-shared-with-deps-1.13.1+cu116.zip
+
+RUN rm -rf libtorch-cxx11-abi-shared-with-deps-1.13.1+cu116.zip
+
+RUN pip install cmake \
+    && apt install -y software-properties-common \
+    && add-apt-repository -y ppa:ubuntu-toolchain-r/test \
+    && apt update \
+    && apt-get -y install gcc-11 g++-11
+
+ADD ssil/environment.yml /tmp/environment.yml
+RUN conda config --set channel_priority flexible
+RUN conda env create -f /tmp/environment.yml
+
+# Clean up APT when done.
+RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+ADD . .

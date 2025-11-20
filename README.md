@@ -114,3 +114,14 @@ Below we note each pre-existing algorithm included, with the links to the origin
 | PIBT      | [https://github.com/Kei18/pypibt](https://github.com/Kei18/pypibt) |
 | SCRIMP    | [https://github.com/marmotlab/SCRIMP](https://github.com/marmotlab/SCRIMP) |
 | SSIL      | [https://github.com/Rishi-V/ML-MAPF-with-Search](https://github.com/Rishi-V/ML-MAPF-with-Search) |
+
+## Citation
+
+```bibtex
+@article{jain2025lagat,
+  title={Graph Attention-Guided Search for Dense Multi-Agent Pathfinding},
+  author={Jain, Rishabh and Okumura, Keisuke and Amir, Michael and Prorok, Amanda},
+  year={2025},
+  journal={arXiv preprint arxiv:2510.17382}
+}
+```

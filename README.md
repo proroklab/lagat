@@ -9,6 +9,10 @@ LaGAT combines a neural policy heuristic, an enhanced MAGAT+ model, with a leadi
 
 ![](./assets/arch.png)
 
+## News
+
+- 13 Feb 2026: A simplified version of LaGAT implementation, called [distill-lagat](https://github.com/proroklab/distill-lagat), is available!
+
 ## Structure Overview
 Parts of the algorithm implementations are taken from the [POGEMA Benchmark](https://github.com/Cognitive-AI-Systems/pogema-benchmark)
 and are detailed in `pogema_benchmark/README.md`. We also take the PIBT algorithm implementation from
